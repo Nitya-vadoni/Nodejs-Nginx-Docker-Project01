@@ -5,6 +5,7 @@ pipeline {
 	DOCKER_USER = "nityavadoni"	
 	IMAGE_NODE = "${DOCKER_USER}/node-app"
 	IMAGE_NGINX= "${DOCKER_USER}/nginx-app"
+	target_vm = "44.200.179.228"
     }
 	
     stages {
@@ -32,5 +33,32 @@ pipeline {
 				sh 'docker push $IMAGE_NGINX:latest'
             }
         }
+		stage('Deploy to VM') {
+        steps {
+        sshagent(['ec2-ssh-key']) {
+            sh '''
+            ssh -o StrictHostKeyChecking=no ubuntu@<VM-IP> << EOF
+
+            docker pull nityavadoni/node-app:latest
+            docker pull nityavadoni/nginx-app:latest
+
+            docker stop node-app || true
+            docker stop nginx-app || true
+
+            docker rm node-app || true
+            docker rm nginx-app || true
+
+            docker run -d --name node-app -p 3000:3000 nityavadoni/node-app:latest
+
+            docker run -d --name nginx-app -p 80:80 \
+            --link node-app:node-app \
+            nityavadoni/nginx-app:latest
+
+            EOF
+            '''
+        }
+    }
+}
+			  
     }
 }
