@@ -11,7 +11,7 @@ pipeline {
         stage('Image Build') {
             steps {
                 sh 'docker build -t node-app .'
-		sh 'docker build -t nginx-app .'
+		        sh 'docker build -t nginx-app .'
             }
         }
 	}
@@ -26,9 +26,10 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('push the images to Dockerhub') {
             steps {
-                echo 'Deploying application...'
+                sh 'docker push $IMAGE_NODE : latest'
+				sh 'docker push $IMAGE_NGINX : latest'
             }
         }
     }
