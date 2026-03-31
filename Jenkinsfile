@@ -11,7 +11,7 @@ pipeline {
         stage('Image Build') {
             steps {
                 sh 'docker build -f Dockerfile-Nodejs -t $IMAGE_NODE:latest .'
-		        sh 'docker build -f Dockerfile-Nginx -t $IMAGE_NGINX:latest ./Dockerfile-Nginx'
+		        sh 'docker build -f Dockerfile-Nginx -t $IMAGE_NGINX:latest .'
             }
         }
 	
@@ -24,7 +24,7 @@ pipeline {
 		)]) {
 			sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
             }
-        }
+          }
 		}
         stage('push the images to Dockerhub') {
             steps {
