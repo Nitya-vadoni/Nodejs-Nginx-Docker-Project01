@@ -35,9 +35,9 @@ pipeline {
         }
 		stage('Deploy to VM') {
         steps {
-        sshagent(['ec2-ssh-key']) {
+        sshagent(['44.200.179.228']) {
             sh '''
-            ssh -o StrictHostKeyChecking=no ubuntu@<VM-IP> << EOF
+            ssh -o StrictHostKeyChecking=no ubuntu@<44.200.179.228> << EOF
 
             docker pull nityavadoni/node-app:latest
             docker pull nityavadoni/nginx-app:latest
