@@ -34,7 +34,7 @@ pipeline {
         }
 		stage('Deploy to VM') {
         steps {
-        sshagent(['98.93.3.143']) {
+        sshagent(['ec2-ssh-key']) {
             sh '''
             ssh -o StrictHostKeyChecking=no ubuntu@<98.93.3.143> << EOF
 
