@@ -51,9 +51,7 @@ pipeline {
 			
             docker run -d --name node-app -p 3000:3000 nityavadoni/node-app:latest
 
-            docker run -d --name nginx-app -p 80:80 \
-            --link node-app:node-app \
-            nityavadoni/nginx-app:latest
+            docker run -d --name nginx-app --network app-network -p 80:80 nityavadoni/nginx-app:latest
 			"
             '''
         }
