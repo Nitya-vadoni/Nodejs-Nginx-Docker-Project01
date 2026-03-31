@@ -5,7 +5,6 @@ pipeline {
 	DOCKER_USER = "nityavadoni"	
 	IMAGE_NODE = "${DOCKER_USER}/node-app"
 	IMAGE_NGINX= "${DOCKER_USER}/nginx-app"
-	target_vm = "44.200.179.228"
     }
 	
     stages {
