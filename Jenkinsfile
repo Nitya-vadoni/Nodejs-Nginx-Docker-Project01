@@ -3,33 +3,33 @@ pipeline {
 
     environment{
 	DOCKER_USER = "nityavadoni"	
-	IMAGE_NODE = ${DOCKER_USER}/node-app
-	IMAGE_NGINX= ${DOCKER_USER}/nginx-app
+	IMAGE_NODE = "${DOCKER_USER}/node-app"
+	IMAGE_NGINX= "${DOCKER_USER}/nginx-app"
     }
 	
     stages {
         stage('Image Build') {
             steps {
-                sh 'docker build -t node-app .'
-		        sh 'docker build -t nginx-app .'
+                sh 'docker build -t $IMAGE_NODE:latest .'
+		        sh 'docker build -t $IMAGE_NGINX:latest .'
             }
         }
-	}
-        stage('Login to dockerhub') {
+	
+        stage('Login to Dockerhub') {
             steps {
                 withCredentials([usernamePassword(
-		    credentialsId: 'dockerhub-creds',
-		    usernameVariable: 'DOCKER_USER' ,
-		    passwordVarialble: 'DOCKER_PASS'
+		   		 credentialsId: 'dockerhub-creds',
+		    	 usernameVariable: 'DOCKER_USER' ,
+		    	 passwordVariable: 'DOCKER_PASS'
 		)]) {
 			sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
             }
         }
-
+		}
         stage('push the images to Dockerhub') {
             steps {
-                sh 'docker push $IMAGE_NODE : latest'
-				sh 'docker push $IMAGE_NGINX : latest'
+                sh 'docker push $IMAGE_NODE:latest'
+				sh 'docker push $IMAGE_NGINX:latest'
             }
         }
     }
