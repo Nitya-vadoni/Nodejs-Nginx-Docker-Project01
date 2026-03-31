@@ -36,7 +36,7 @@ pipeline {
         steps {
         sshagent(['ec2-ssh-key']) {
             sh '''
-            ssh -o StrictHostKeyChecking=no ubuntu@<98.93.3.143> << EOF
+            ssh -o StrictHostKeyChecking=no ubuntu@98.93.3.143"
 
             docker pull nityavadoni/node-app:latest
             docker pull nityavadoni/nginx-app:latest
@@ -52,8 +52,7 @@ pipeline {
             docker run -d --name nginx-app -p 80:80 \
             --link node-app:node-app \
             nityavadoni/nginx-app:latest
-
-            EOF
+			"
             '''
         }
     }
