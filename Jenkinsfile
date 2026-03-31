@@ -14,7 +14,7 @@ pipeline {
 		sh 'docker build -t nginx-app .'
             }
         }
-
+	}
         stage('Login to dockerhub') {
             steps {
                 withCredentials([usernamePassword(
