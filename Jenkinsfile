@@ -36,17 +36,19 @@ pipeline {
         steps {
         sshagent(['ec2-ssh-key']) {
             sh '''
-            ssh -o StrictHostKeyChecking=no ubuntu@98.93.3.143"
+            ssh -o StrictHostKeyChecking=no ubuntu@98.93.3.143 "
 
-            docker pull nityavadoni/node-app:latest
-            docker pull nityavadoni/nginx-app:latest
+            docker pull nityavadoni/node-app:latest &&
+            docker pull nityavadoni/nginx-app:latest &&
 
-            docker stop node-app || true
-            docker stop nginx-app || true
+            docker stop node-app || true &&
+            docker stop nginx-app || true &&
 
-            docker rm node-app || true
-            docker rm nginx-app || true
+            docker rm node-app || true &&
+            docker rm nginx-app || true &&
 
+			docker network create app-network || true &&
+			
             docker run -d --name node-app -p 3000:3000 nityavadoni/node-app:latest
 
             docker run -d --name nginx-app -p 80:80 \
